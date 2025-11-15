@@ -13,6 +13,14 @@ class Game {
   PImage[] enemySprites;
   PImage heart;
 
+  //_---Mensajes__
+
+  String startMessage = "¡Acaba con los virus!";
+  int messageDuration = 3000;
+  int messageStartTime = 0;
+  boolean showStartMessage = true;
+
+
   // --- Spawning / timing ---
   float spawnTimer = 0;
   float spawnInterval = 1.0;
@@ -49,6 +57,9 @@ class Game {
   // Constructor
   Game() {
     loadResources();
+
+    messageStartTime = millis();
+    showStartMessage = true;
 
     player = new Player(width / 2, height - 80);
     enemies = new ArrayList<Enemy>();
@@ -264,6 +275,21 @@ class Game {
 
   // Mostrar entidades
   void display() {
+
+    if (showStartMessage) {
+      int elapsed = millis() - messageStartTime;
+
+      if (elapsed < messageDuration) {
+        fill(255);
+        textAlign(CENTER);
+        textFont(pixelFont);
+        textSize(32);
+        text(startMessage, width/2, height/2);
+      } else {
+        showStartMessage = false;  
+      }
+    }
+
     if (player != null) player.display();
     for (Enemy e : enemies) e.display();
     for (Bullet b : bullets) b.display();
@@ -333,7 +359,8 @@ class Game {
     try {
       PImage t = loadImage(filename);
       return t != null;
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       return false;
     }
   }
