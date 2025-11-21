@@ -22,6 +22,7 @@ PImage playerBoy, playerWoman;
 PImage logo;
 PImage txtpausa, txtajustes, txtayuda, keyAyuda, musica, txtrecords, txtpuntuacion;
 PFont pixelFont;
+PImage[] enemySpritesGlobal;
 
 int gameState = 0;
 int previousState = 0;
@@ -37,13 +38,13 @@ int savedMsgTimer = 0;
 Game gameInstance = null;
 Game getGame() {
   if (gameInstance == null) {
-    gameInstance = new Game();
+    gameInstance = new Game(enemySpritesGlobal, heart);
   }
   return gameInstance;
 }
 
 void resetGame() {
-  gameInstance = new Game();
+  gameInstance = new Game(enemySpritesGlobal, heart);
   enteringName = false;
   newRecordName = "";
   showSavedMsg = false;
@@ -110,6 +111,7 @@ void setup() {
   btnMusicOn = loadImage("botton_musicon.png");
   btnMusicOff = loadImage("botton_musicoff.png");
   musica = loadImage("musica.png");
+  heart = loadImage("heart.png");
   bg = loadImage("bg.jpg");
   bg1 = loadImage("bgsw1.png");
   bg2 = loadImage("bgsw2.png");
@@ -126,6 +128,17 @@ void setup() {
   txtayuda = loadImage("txtayuda.png");
   keyAyuda = loadImage("keyAyuda.png");
   txtpuntuacion = loadImage("txtpuntuacion.png");
+  
+  enemySpritesGlobal = new PImage[] {
+  loadImage("ske_green.png"),
+  loadImage("ske_orange.png"),
+  loadImage("ske_purple.png"),
+  loadImage("ske_red.png"),
+  loadImage("ske_blue.png"),
+  loadImage("ske_white.png"),
+  loadImage("ske_yellow.png")
+};
+
 
   // Inicializar música
   try {

@@ -12,7 +12,6 @@ class Game {
   // --- Recursos gráficos ---
   PImage[] enemySprites;
   PImage heart;
-
   //_---Mensajes__
 
   String startMessage = "¡Acaba con los virus!";
@@ -55,8 +54,10 @@ class Game {
   String difficulty = "media";
 
   // Constructor
-  Game() {
-    loadResources();
+  Game(PImage[] enemySpritesRef, PImage heartRef) {
+    
+    this.enemySprites = enemySpritesRef;
+    this.heart = heartRef;
 
     messageStartTime = millis();
     showStartMessage = true;
@@ -80,19 +81,7 @@ class Game {
     setDifficulty("media");
   }
 
-  // Carga de imágenes
-  void loadResources() {
-    enemySprites = new PImage[] {
-      loadImage("ske_green.png"),
-      loadImage("ske_orange.png"),
-      loadImage("ske_purple.png"),
-      loadImage("ske_red.png"),
-      loadImage("ske_blue.png"),
-      loadImage("ske_white.png"),
-      loadImage("ske_yellow.png")
-    };
-    heart = loadImage("heart.png");
-  }
+  
 
   // Ajustar parámetros según dificultad
   void setDifficulty(String difficulty) {
