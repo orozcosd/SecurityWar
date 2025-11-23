@@ -16,8 +16,6 @@ class Game {
 
   String startMessage = "¡Acaba con los virus!";
   int messageDuration = 3000;
-  int messageStartTime = 0;
-  boolean showStartMessage = true;
 
 
   // --- Spawning / timing ---
@@ -42,7 +40,7 @@ class Game {
 
   // Duración total de la partida (ms)
   int gameDurationMs = 100 * 1000;
-  int timerStart = 0;
+
 
   // Para calcular delta-time entre updates
   int lastUpdateMs = 0;
@@ -53,9 +51,17 @@ class Game {
   // Dificultad actual
   String difficulty = "media";
 
+  // --- VARIABLES PARA CONTROLAR TIEMPO Y PAUSA ---
+  int timerStart = 0;          // ms cuando empezó la partida
+  int messageStartTime = 0;    // ms para el mensaje inicial
+  boolean showStartMessage = false;
+  boolean hasStarted = false;  // si la partida ya fue iniciada (startTimer llamado)
+  int pauseStart = 0;          // ms cuando se pausó (0 = no en pausa)
+  int pauseAccum = 0;          // ms acumulados en pausas anteriores
+
   // Constructor
   Game(PImage[] enemySpritesRef, PImage heartRef) {
-    
+
     this.enemySprites = enemySpritesRef;
     this.heart = heartRef;
 
@@ -77,11 +83,58 @@ class Game {
     collisions = 0;
     lives = 3;
 
-    timerStart = millis();
     setDifficulty("media");
   }
 
-  
+  void startTimer() {
+    if (!hasStarted) {
+      timerStart = millis();
+      messageStartTime = millis();
+      showStartMessage = true;
+      hasStarted = true;
+      pauseStart = 0;
+      pauseAccum = 0;
+    }
+  }
+
+  void pauseTimer() {
+    if (hasStarted && pauseStart == 0) {
+      pauseStart = millis();
+    }
+  }
+
+  void resumeTimer() {
+    if (hasStarted && pauseStart != 0) {
+      pauseAccum += millis() - pauseStart;
+      pauseStart = 0;
+    }
+  }
+
+
+  void resetTimerState() {
+    timerStart = 0;
+    messageStartTime = 0;
+    showStartMessage = false;
+    hasStarted = false;
+    pauseStart = 0;
+    pauseAccum = 0;
+  }
+
+  // Obtener segundos transcurridos tomando en cuenta pausas
+  int getElapsedSeconds() {
+    if (!hasStarted) return 0;
+    int now = millis();
+    int elapsedMs;
+    if (pauseStart != 0) {
+      // si está en pausa, cuenta hasta cuando se pausó
+      elapsedMs = pauseStart - timerStart - pauseAccum;
+    } else {
+      elapsedMs = now - timerStart - pauseAccum;
+    }
+    if (elapsedMs < 0) elapsedMs = 0;
+    return elapsedMs / 1000;
+  }
+
 
   // Ajustar parámetros según dificultad
   void setDifficulty(String difficulty) {
@@ -129,7 +182,7 @@ class Game {
     return score;
   }
 
-  int getElapsedSeconds() {
+  int getPlayElapsedSeconds() {
     return max(0, (millis() - timerStart) / 1000);
   }
 
@@ -275,7 +328,7 @@ class Game {
         textSize(32);
         text(startMessage, width/2, height/2);
       } else {
-        showStartMessage = false;  
+        showStartMessage = false;
       }
     }
 
@@ -305,7 +358,8 @@ class Game {
     }
 
     // Tiempo restante
-    int timeLeftSec = max(0, (gameDurationMs - (millis() - timerStart)) / 1000);
+    int elapsed = getElapsedSeconds();
+    int timeLeftSec = max(0, (gameDurationMs / 1000) - elapsed);
     textAlign(CENTER);
     text("Time: " + timeLeftSec, width / 2, 24);
   }

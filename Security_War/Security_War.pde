@@ -45,6 +45,7 @@ Game getGame() {
 
 void resetGame() {
   gameInstance = new Game(enemySpritesGlobal, heart);
+  gameInstance.resetTimerState();
   enteringName = false;
   newRecordName = "";
   showSavedMsg = false;
@@ -128,16 +129,16 @@ void setup() {
   txtayuda = loadImage("txtayuda.png");
   keyAyuda = loadImage("keyAyuda.png");
   txtpuntuacion = loadImage("txtpuntuacion.png");
-  
+
   enemySpritesGlobal = new PImage[] {
-  loadImage("ske_green.png"),
-  loadImage("ske_orange.png"),
-  loadImage("ske_purple.png"),
-  loadImage("ske_red.png"),
-  loadImage("ske_blue.png"),
-  loadImage("ske_white.png"),
-  loadImage("ske_yellow.png")
-};
+    loadImage("ske_green.png"),
+    loadImage("ske_orange.png"),
+    loadImage("ske_purple.png"),
+    loadImage("ske_red.png"),
+    loadImage("ske_blue.png"),
+    loadImage("ske_white.png"),
+    loadImage("ske_yellow.png")
+  };
 
 
   // Inicializar música
@@ -199,6 +200,7 @@ void draw() {
 
   case 2: // JUEGO
     if (gameInstance != null) {
+
       gameInstance.update();
       gameInstance.display();
     } else {
@@ -245,7 +247,7 @@ void draw() {
 
     // Obtener datos del juego
     int baseScore = (gameInstance != null) ? gameInstance.getScore() : 0;
-    int elapsed = (gameInstance != null) ? gameInstance.getElapsedSeconds() : 0;
+    int elapsed = (gameInstance != null) ? gameInstance.getPlayElapsedSeconds() : 0;
     String diff = (gameInstance != null) ? gameInstance.getDifficulty() : "media";
 
     // Multiplicadores por dificultad
@@ -434,16 +436,22 @@ void mousePressed() {
     if (overButton(width / 2 - 100, 270, 200, 60)) {
       gameInstance.setDifficulty("facil");
       gameState = 2;
+      if (gameInstance == null) gameInstance = getGame();
+      if (gameInstance != null) gameInstance.startTimer();
       return;
     }
     if (overButton(width / 2 - 100, 350, 200, 60)) {
       gameInstance.setDifficulty("media");
       gameState = 2;
+      if (gameInstance == null) gameInstance = getGame();
+      if (gameInstance != null) gameInstance.startTimer();
       return;
     }
     if (overButton(width / 2 - 100, 430, 200, 60)) {
       gameInstance.setDifficulty("dificil");
       gameState = 2;
+      if (gameInstance == null) gameInstance = getGame();
+      if (gameInstance != null) gameInstance.startTimer();
       return;
     }
   }
@@ -517,6 +525,8 @@ void mousePressed() {
     }
     if (overButton(width / 2 - 100, 520, 200, 60)) {
       gameState = 2;
+      if (gameInstance == null) gameInstance = getGame();
+      if (gameInstance != null) gameInstance.resumeTimer();
       return;
     }
   }
@@ -537,9 +547,12 @@ void keyPressed() {
   if ((key == 'p' || key == 'P')) {
     if (gameState == 2) {
       gameState = 7;
+      if (gameInstance != null) gameInstance.pauseTimer();
       return;
     } else if (gameState == 7) {
       gameState = 2;
+      if (gameInstance == null) gameInstance = getGame();
+      if (gameInstance != null) gameInstance.resumeTimer();
       return;
     }
   }
@@ -557,7 +570,7 @@ void keyPressed() {
       while (newRecordName.length() < 3) newRecordName += " ";
 
       int baseScore = (gameInstance != null) ? gameInstance.getScore() : 0;
-      int elapsed = (gameInstance != null) ? gameInstance.getElapsedSeconds() : 0;
+      int elapsed = (gameInstance != null) ? gameInstance.getPlayElapsedSeconds() : 0;
       String diff = (gameInstance != null) ? gameInstance.getDifficulty() : "media";
 
       MultipliersList diffList = new MultipliersList();
