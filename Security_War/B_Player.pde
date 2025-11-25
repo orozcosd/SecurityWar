@@ -19,9 +19,9 @@ class Player {
 
   void update() {
     // Movimiento horizontal simple
-    if (keyPressed && (keyCode == LEFT || key == 'a' || key == 'A')) {
+    if (keyPressed && (keyCode == LEFT)) {
       x -= speed;
-    } else if (keyPressed && (keyCode == RIGHT || key == 'd' || key == 'D')) {
+    } else if (keyPressed && (keyCode == RIGHT)) {
       x += speed;
     }
 
@@ -50,7 +50,7 @@ void shoot() {
 
 
   void keyPressed() {
-    if (key == ' ' || key == 'x' || key == 'X') {
+    if (key == ' ') {
       shoot();
     }
   }
