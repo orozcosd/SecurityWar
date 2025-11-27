@@ -159,19 +159,19 @@ class Game {
       maxEnemySpeed = 1.6;
       enemyShootIntervalMin = 1.2;
       enemyShootIntervalMax = 2.0;
-      bossSpeedMultiplier = 1.0;
+      bossSpeedMultiplier = 1.2;
       bossShootInterval = 1.0;
       bossShotAcceptance = 0.8;
     } else if (d.equals("dificil")) {
-      spawnInterval = 0.7;
+      spawnInterval = 0.4;
       maxEnemiesToSpawn = 20;
       minEnemySpeed = 1.8;
       maxEnemySpeed = 2.0;
       enemyShootIntervalMin = 1.0;
       enemyShootIntervalMax = 1.6;
-      bossSpeedMultiplier = 1.4;
-      bossShootInterval = 0.75;
-      bossShotAcceptance = 1.0;
+      bossSpeedMultiplier = 1.8;
+      bossShootInterval = 0.45;
+      bossShotAcceptance = 1.2;
     } else {
       setDifficulty("media");
     }

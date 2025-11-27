@@ -179,7 +179,7 @@ void draw() {
     textAlign(CENTER);
     textFont(pixelFont);
     textSize(20);
-    text("¡DEFIENDE EL SISTEMA!", width / 2, height / 2 - 30);
+    text("¡DEFIENDE TU COMPUTADOR!", width / 2, height / 2 - 30);
     break;
 
   case 1: // SELECCIÓN DE JUGADOR
@@ -195,7 +195,8 @@ void draw() {
     textAlign(CENTER);
     textFont(pixelFont);
     textSize(16);
-    text("¡Se parte de la policia antivirus!", width / 2, height / 2 - 80);
+    text("¡No dejes que los virus dañen tu computador!", width / 2, height / 2 - 80);
+    text("Para acabar con las amenazas,\nllama la policia antivirus", width / 2, height / 2 - 50);
     break;
 
   case 2: // JUEGO
@@ -220,7 +221,7 @@ void draw() {
       gameoverPlayed = true;
     }
     break;
-
+ 
   case 4: // AJUSTES
     image(bg1, 0, 0, width, height);
     imageMode(CENTER);
@@ -238,6 +239,11 @@ void draw() {
     imageMode(CENTER);
     image(win, width / 2, height / 2 - 200, 250, 200);
     imageMode(CORNER);
+    fill(255);
+    textAlign(CENTER);
+    textFont(pixelFont);
+    textSize(16);
+    text("¡Amenaza neutralizada! Eres un Policia antivirus!", width / 2, height / 2 +250);
     if (!winPlayed) {
       if (wins != null) wins.play();
       winPlayed = true;
@@ -439,7 +445,7 @@ void mousePressed() {
       if (gameInstance == null) gameInstance = getGame();
       if (gameInstance != null) gameInstance.startTimer();
       return;
-    } 
+    }
     if (overButton(width / 2 - 100, 350, 200, 60)) {
       gameInstance.setDifficulty("media");
       gameState = 2;
