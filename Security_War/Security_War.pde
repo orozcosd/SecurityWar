@@ -439,7 +439,7 @@ void mousePressed() {
       if (gameInstance == null) gameInstance = getGame();
       if (gameInstance != null) gameInstance.startTimer();
       return;
-    }
+    } 
     if (overButton(width / 2 - 100, 350, 200, 60)) {
       gameInstance.setDifficulty("media");
       gameState = 2;

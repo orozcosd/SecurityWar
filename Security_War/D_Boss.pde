@@ -61,7 +61,7 @@ class Boss {
     rect(x, y - 12, displayW * pct, 8);
   }
 
-  // Ahora devuelve una lista de balas (central + sides si corresponde)
+  // devuelve una lista de balas (central + sides si corresponde)
   ArrayList<Bullet> tryShoot() {
     if (!isAlive) return null;
     if (shootTimer >= shootInterval) {
